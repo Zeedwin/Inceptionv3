@@ -1,0 +1,39 @@
+version: '3'
+
+services:
+  mariadb:
+    container_name: mariadb
+    build:
+      context: .
+      dockerfile: ./requirements/mariadb/Dockerfile
+      args:
+        - DB_NAME=${DB_NAME}
+        - DB_USER=${DB_USER}
+        - DB_PASS=${DB_PASS}
+        - DB_ROOT=${DB_ROOT}
+    volumes:
+      - dbvolume:/var/lib/mysql/
+  wordpress:
+    container_name: wordpress
+    build:
+      context: .
+      dockerfile: ./requirements/wordpress/Dockerfile
+      args:
+        - DB_NAME=${DB_NAME}
+        - DB_USER=${DB_USER}
+        - DB_PASS=${DB_PASS}
+    volumes:
+      - wpvolume:/var/www/
+    depends_on:
+      - mariadb
+volumes:
+  dbvolume:
+    driver_opts:
+      o: bind
+      type: bind
+      device: ${HOME}/data/mariadb
+  wpvolume:
+    driver_opts:
+      o: bind
+      type: bind
+      device: ${HOME}/data/wordpress
