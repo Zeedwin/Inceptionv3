@@ -14,6 +14,8 @@ eof
     mariadbd --user=mysql &
     sleep 3
     mariadb < /tmp/create_db.sql
+    printf '\n\n\nFLUSH TABLES;\n' >> dump.sql
+    echo "use $DB_NAME;" | cat - dump.sql | mariadb
     kill %1
     rm /tmp/create_db.sql
 fi

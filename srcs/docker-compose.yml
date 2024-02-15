@@ -13,6 +13,8 @@ services:
         - DB_ROOT=${DB_ROOT}
     volumes:
       - dbvolume:/var/lib/mysql/
+    networks:
+      - jgirard
   wordpress:
     container_name: wordpress
     build:
@@ -24,8 +26,27 @@ services:
         - DB_PASS=${DB_PASS}
     volumes:
       - wpvolume:/var/www/
+    networks:
+      - jgirard
     depends_on:
       - mariadb
+  nginx:
+    container_name: nginx
+    build:
+      args:
+        - DOMAIN_NAME=${DOMAIN_NAME}
+        - SSL_KEY=${SSL_KEY}
+        - SSL_CERT=${SSL_CERT}
+      context: .
+      dockerfile: ./requirements/nginx/Dockerfile
+    volumes:
+      - wpvolume:/var/www/
+    networks:
+      - jgirard
+    depends_on:
+      - wordpress
+    ports:
+      - 443:443
 volumes:
   dbvolume:
     driver_opts:
@@ -37,3 +58,7 @@ volumes:
       o: bind
       type: bind
       device: ${HOME}/data/wordpress
+networks:
+  jgirard:
+    name: jgirard
+    driver: bridge

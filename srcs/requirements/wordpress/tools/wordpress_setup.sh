@@ -10,7 +10,7 @@ define( 'DB_PASSWORD', '$DB_PASS' );
 define( 'DB_HOST', 'mariadb' );
 define( 'DB_CHARSET', 'utf8' );
 define( 'DB_COLLATE', '' );
-$table_prefix = 'wp_';
+\$table_prefix = 'wp_';
 define( 'WP_DEBUG', false );
 if ( ! defined( 'ABSPATH' ) ) {
         define( 'ABSPATH', __DIR__ . '/' );
