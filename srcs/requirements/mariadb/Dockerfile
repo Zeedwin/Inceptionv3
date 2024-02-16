@@ -18,7 +18,7 @@ RUN sed -i "s|skip-networking|skip-networking=0|g" \
 RUN echo ${DB_NAME}
 COPY ./requirements/mariadb/tools/create_db.sh .
 COPY ./requirements/mariadb/tools/dump.sql .
-RUN chmod +x create_db.sh && /create_db.sh && rm create_db.sh dump.sql
+RUN chmod +x create_db.sh && /create_db.sh && rm create_db.sh 
 USER mysql
 EXPOSE 3306
 CMD [ "mariadbd" ]
